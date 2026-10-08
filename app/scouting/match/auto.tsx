@@ -2,9 +2,9 @@ import AutoStartPosition from '@/components/form/AutoStartPosition';
 import SelectWithLabel from '@/components/form/SelectWithLabel';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import Checkbox from '../../components/form/checkbox';
-import StackedCounter from '../../components/form/StackedCounter';
-import { useForm } from '../../components/match-form';
+import Checkbox from '../../../components/form/checkbox';
+import StackedCounter from '../../../components/form/StackedCounter';
+import { useForm } from '../../../components/match-form';
 
 const AutoScreen = () => {
 

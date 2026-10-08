@@ -5,14 +5,14 @@ import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 
 import { useRouter } from 'expo-router';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FormAction, FormState, useForm } from '../../components/match-form';
+import { FormAction, FormState, useForm } from '../../../../components/match-form';
 
-import Checkbox from '../../components/form/checkbox';
-import { FeedbackDataInsert, LiveDataInsert, supabase, supabaseStatisticFeedback } from '../supabase';
+import Checkbox from '../../../../components/form/checkbox';
+import { FeedbackDataInsert, LiveDataInsert, supabase, supabaseStatisticFeedback } from '../../supabase';
 
 // inside your component
 import SelectWithLabel from '@/components/form/SelectWithLabel';
-import { EVENT_KEY } from '../misc/EVENT_KEY';
+import { EVENT_KEY } from '../../../misc/EVENT_KEY';
 const router = useRouter();
 
 const ConcludeScreen = () => {
@@ -146,13 +146,13 @@ const ConcludeScreen = () => {
                 defense_strength: state.playedDefense ? state.defenseStrength : null,
                 disabled: state.disabled,
                 driver_rating: state.driverSkill,
-                driver_station: state.selectedStation,
+                driver_station: 'B1',
                 endgame_points: endgamePointsCount,
                 id: ID,
                 incurred_penalties: state.incurredPenalties,
                 lost_comms: state.lostComms,
-                match_number: parseInt(state.matchNumber),
-                match_type: 'match',
+                match_number: Math.round(Math.random() * 10000),
+                match_type: 'pre',
                 played_defense: state.playedDefense,
                 strategies: state.strategyText,
                 team_number: parseInt(state.teamNumber),
@@ -163,8 +163,6 @@ const ConcludeScreen = () => {
                 tele_points: telePointsCount,
                 throughput_speed: state.throughputSpeed,
                 tioi_rating: state.tioiRating,
-                shot_locations: state.shotLocations,
-                how_defendable: state.howDefendable,
             };
 
             const { error } = await supabase.from('Live Data').insert(
@@ -172,37 +170,12 @@ const ConcludeScreen = () => {
             );
 
             if (error) {
-                console.log(error.code);
-                if (error.code != '23502') {
-                    let offline = JSON.parse(await AsyncStorage.getItem('offline-data-2026') ?? '[]');
-                    offline.push(dataInsert);
-                    await AsyncStorage.setItem('offline-data-2026', JSON.stringify(offline));
-                }
                 alert('ERROR: ' + error.message + (error.code == '23502' ? '. \n\nThis error is likely due to an empty input field, make sure the form is fully filled out.' : '.\n\nThis error cause is unknown, connection is always a culprit. Report this issue to scout lead.'));
                 setIsDisabled(false);
-                if (error.code != '23502') {
-                    await AsyncStorage.setItem('showWager', 'true');
-
-                    const savedName = state.nameText;
-                    const savedStation = state.selectedStation;
-                    const currentMatch = parseInt(state.matchNumber) || 0;
-
-                    alert('The form data will be saved in the offline tab. You may upload later and proceed with the next match.');
-
-                    dispatch({ type: 'RESET_FORM' });
-                    dispatch({ type: 'UPDATE_FIELD', field: 'nameText', value: savedName });
-                    dispatch({ type: 'UPDATE_FIELD', field: 'selectedStation', value: savedStation });
-                    dispatch({
-                        type: 'UPDATE_FIELD',
-                        field: 'matchNumber',
-                        value: (currentMatch + 1).toString(),
-                    });
-
-                    router.replace('./');
-                }
             } else {
                 setIsDisabled(false);
                 alert('Data submitted successfully! A new form will begin now.');
+
 
                 await AsyncStorage.setItem('showWager', 'true');
 

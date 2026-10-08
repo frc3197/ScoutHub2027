@@ -1,4 +1,4 @@
-import { Database } from '@/app/database.types';
+import { Database } from '@/app/backend/database.types';
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 

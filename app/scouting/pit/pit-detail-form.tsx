@@ -1,4 +1,4 @@
-import { Database } from '@/app/database.types';
+import { Database } from '@/app/backend/database.types';
 import { createContext, Dispatch, useContext, useReducer } from 'react';
 
 type PitScoutingRow = Database['public']['Tables']['Pit Scouting']['Row'];
