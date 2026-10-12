@@ -5,14 +5,14 @@ import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 
 import { useRouter } from 'expo-router';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FormAction, FormState, useForm } from '../../../../components/match-form';
+import { FormAction, FormState, useForm } from '../../../components/match-form';
 
-import Checkbox from '../../../../components/form/checkbox';
+import Checkbox from '../../../components/form/checkbox';
 import { FeedbackDataInsert, LiveDataInsert, supabase, supabaseStatisticFeedback } from '../../supabase';
 
 // inside your component
 import SelectWithLabel from '@/components/form/SelectWithLabel';
-import { EVENT_KEY } from '../../../misc/EVENT_KEY';
+import { EVENT_KEY } from '../../misc/EVENT_KEY';
 const router = useRouter();
 
 const ConcludeScreen = () => {
@@ -152,7 +152,7 @@ const ConcludeScreen = () => {
                 incurred_penalties: state.incurredPenalties,
                 lost_comms: state.lostComms,
                 match_number: Math.round(Math.random() * 10000),
-                match_type: 'practice',
+                match_type: 'pre',
                 played_defense: state.playedDefense,
                 strategies: state.strategyText,
                 team_number: parseInt(state.teamNumber),

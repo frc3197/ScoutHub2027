@@ -1,13 +1,15 @@
+import NumberInputWithLabel from '@/components/form/NumberInputWithLabel';
 import SelectWithLabel from '@/components/form/SelectWithLabel';
 import Prediction from '@/components/Prediction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useEffect } from 'react';
+import { useRouter } from 'expo-router';
+import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useForm } from '../../../../components/match-form';
-import { FeedbackDatabase } from '../../../backend/feedbacksupabasetypes';
-import { EVENT_KEY } from '../../../misc/EVENT_KEY';
-import { supabaseStatisticFeedback } from '../../supabase';
+import { useForm } from '../../components/match-form';
+import { Database } from '../database.types';
+import { FeedbackDatabase } from '../feedbacksupabasetypes';
+import { EVENT_KEY } from '../misc/EVENT_KEY';
+import { supabaseStatisticFeedback } from '../supabase';
 
 const GeneralScreen = () => {
 
@@ -17,7 +19,6 @@ const GeneralScreen = () => {
     const [scoutNames, setScoutNames] = React.useState<FeedbackDatabase['public']['Tables']['members']['Row'][]>([]);
 
     const [localTeamNumber, setLocalTeamNumber] = React.useState<string>('');
-    const { team } = useLocalSearchParams();
 
     React.useEffect(() => {
         async function getNames() {
@@ -58,22 +59,30 @@ const GeneralScreen = () => {
         return 'UNKNOWN';
     }
 
-    useEffect(() => {
-        dispatch({ type: 'UPDATE_FIELD', field: 'teamNumber', value: String(team) });
-        setLocalTeamNumber(String(team));
-    }, [team]);
-
     return (
         <ScrollView style={styles.scrollView}>
             <View style={styles.pageContainer}>
 
-                <Text style={styles.warningText}>This page is for PRE SCOUTING only!!! DO NOT SCOUT QUALIFICATION OR PRACTICE MATCHES HERE! To scout those, go to the home page.</Text>
-
                 <SelectWithLabel label='Scout name:' selectedValue={state.nameText} itemLabelFormatter={nameLabelFormatter} callback={nameChangeCallback} items={['GUEST', ...[...scoutNames].sort((a, b) => (a['first_name'] ?? '').localeCompare(b['first_name'] ?? '')).map((v, i) => JSON.stringify(v))]} />
 
-                <View style={styles.horizontalContainer}>
-                    <Text style={styles.labelTeam}>You are pre-scouting team {team}.</Text>
-                </View>
+                <NumberInputWithLabel label='Match #:' value={state.matchNumber} placeholder='ex. 77' callback={(text: string) => dispatch({ type: 'UPDATE_FIELD', field: 'matchNumber', value: text })} />
+
+                <NumberInputWithLabel label='Team #:' value={state.teamNumber} placeholder='ex. 9997' callback={(text: string) => {
+                    dispatch({ type: 'UPDATE_FIELD', field: 'teamNumber', value: text });
+                    setLocalTeamNumber(text);
+                }} onBlur={() => {
+                    if (!teams.includes(parseInt(localTeamNumber))) {
+                        alert(`Team ${localTeamNumber} not found at event, please double check that they exist!!!`);
+                    }
+                }
+                } />
+
+                <SelectWithLabel label='Station:' selectedValue={state.selectedStation} callback={(value: string) =>
+                    dispatch({ type: 'UPDATE_FIELD', field: 'selectedStation', value: value as Database['public']['Enums']['driverstation'] })
+                } items={['B1', 'B2', 'B3', 'R1', 'R2', 'R3']} />
+
+                <Text style={styles.teamNumberWarning}>Please check the team number! An incorrect team leads to BAD DATA and WASTES YOUR TIME!</Text>
+
                 <Prediction />
 
             </View>
@@ -133,34 +142,6 @@ const styles = StyleSheet.create({
         marginTop: 35,
         fontFamily: 'Lexend-Regular',
         textDecorationLine: 'underline',
-    },
-    warningText: {
-        fontSize: 20,
-        width: '90%',
-        textAlign: 'center',
-        color: 'white',
-        marginVertical: 15,
-        backgroundColor: 'teal',
-        padding: 10,
-    },
-    horizontalContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        width: '100%',
-        justifyContent: 'center',
-    },
-    label: {
-        fontSize: 20,
-        width: '33%',
-        textAlign: 'right',
-        fontWeight: 'bold',
-    },
-    labelTeam: {
-        fontSize: 28,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        marginTop: 10,
     },
 });
 

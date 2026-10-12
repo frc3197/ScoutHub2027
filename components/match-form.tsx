@@ -1,4 +1,4 @@
-import { Database } from "@/app/backend/database.types";
+import { Database } from "@/app/database.types";
 import React, { createContext, ReactNode, useContext, useReducer } from "react";
 
 // Define the shape of your form state

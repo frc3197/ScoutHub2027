@@ -2,7 +2,7 @@ import NumberInputWithLabel from '@/components/form/NumberInputWithLabel';
 import SelectWithLabel from '@/components/form/SelectWithLabel';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useForm } from '../../../../components/match-form';
+import { useForm } from '../../../components/match-form';
 
 const TeleScreen = () => {
 

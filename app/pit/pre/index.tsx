@@ -1,12 +1,12 @@
-import NumberInputWithLabel from '@/components/form/NumberInputWithLabel';
 import SelectWithLabel from '@/components/form/SelectWithLabel';
+import Prediction from '@/components/Prediction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter } from 'expo-router';
-import React from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useForm } from '../../../../components/match-form';
-import { FeedbackDatabase } from '../../../backend/feedbacksupabasetypes';
-import { EVENT_KEY } from '../../../misc/EVENT_KEY';
+import { useForm } from '../../../components/match-form';
+import { FeedbackDatabase } from '../../feedbacksupabasetypes';
+import { EVENT_KEY } from '../../misc/EVENT_KEY';
 import { supabaseStatisticFeedback } from '../../supabase';
 
 const GeneralScreen = () => {
@@ -17,6 +17,7 @@ const GeneralScreen = () => {
     const [scoutNames, setScoutNames] = React.useState<FeedbackDatabase['public']['Tables']['members']['Row'][]>([]);
 
     const [localTeamNumber, setLocalTeamNumber] = React.useState<string>('');
+    const { team } = useLocalSearchParams();
 
     React.useEffect(() => {
         async function getNames() {
@@ -57,23 +58,23 @@ const GeneralScreen = () => {
         return 'UNKNOWN';
     }
 
+    useEffect(() => {
+        dispatch({ type: 'UPDATE_FIELD', field: 'teamNumber', value: String(team) });
+        setLocalTeamNumber(String(team));
+    }, [team]);
+
     return (
         <ScrollView style={styles.scrollView}>
             <View style={styles.pageContainer}>
 
-                <Text style={styles.warningText}>This page is for PRACTICE SCOUTING only!!! DO NOT SCOUT QUALIFICATION OR PRE-SCOUTING MATCHES HERE! To scout those, go to the home page.</Text>
+                <Text style={styles.warningText}>This page is for PRE SCOUTING only!!! DO NOT SCOUT QUALIFICATION OR PRACTICE MATCHES HERE! To scout those, go to the home page.</Text>
 
                 <SelectWithLabel label='Scout name:' selectedValue={state.nameText} itemLabelFormatter={nameLabelFormatter} callback={nameChangeCallback} items={['GUEST', ...[...scoutNames].sort((a, b) => (a['first_name'] ?? '').localeCompare(b['first_name'] ?? '')).map((v, i) => JSON.stringify(v))]} />
 
-                <NumberInputWithLabel label='Team #:' value={state.teamNumber} placeholder='ex. 9997' callback={(text: string) => {
-                    dispatch({ type: 'UPDATE_FIELD', field: 'teamNumber', value: text });
-                    setLocalTeamNumber(text);
-                }} onBlur={() => {
-                    if (!teams.includes(parseInt(localTeamNumber))) {
-                        alert(`Team ${localTeamNumber} not found at event, please double check that they exist!!!`);
-                    }
-                }
-                } />
+                <View style={styles.horizontalContainer}>
+                    <Text style={styles.labelTeam}>You are pre-scouting team {team}.</Text>
+                </View>
+                <Prediction />
 
             </View>
         </ScrollView>
@@ -139,8 +140,27 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: 'white',
         marginVertical: 15,
-        backgroundColor: 'red',
+        backgroundColor: 'teal',
         padding: 10,
+    },
+    horizontalContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+        justifyContent: 'center',
+    },
+    label: {
+        fontSize: 20,
+        width: '33%',
+        textAlign: 'right',
+        fontWeight: 'bold',
+    },
+    labelTeam: {
+        fontSize: 28,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        marginTop: 10,
     },
 });
 

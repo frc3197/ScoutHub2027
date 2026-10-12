@@ -2,8 +2,8 @@ import Loading from '@/components/Loading';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Linking, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import PitTeam from '../../../components/pit-team';
-import { EVENT_KEY } from '../../misc/EVENT_KEY';
+import PitTeam from '../../components/pit-team';
+import { EVENT_KEY } from '../misc/EVENT_KEY';
 import { supabase } from '../supabase';
 
 const HomeScreen = () => {

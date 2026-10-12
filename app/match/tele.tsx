@@ -3,9 +3,9 @@ import { useAudioPlayer } from 'expo-audio';
 import { Image } from 'expo-image';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Checkbox from '../../../components/form/checkbox';
-import StackedCounter from '../../../components/form/StackedCounter';
-import { useForm } from '../../../components/match-form';
+import Checkbox from '../../components/form/checkbox';
+import StackedCounter from '../../components/form/StackedCounter';
+import { useForm } from '../../components/match-form';
 
 const bzzBzzBzz = require('@/assets/sounds/bzzbzzbzz.wav');
 const woah = require('@/assets/sounds/woowooaa.wav');

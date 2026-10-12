@@ -1,15 +1,13 @@
 import NumberInputWithLabel from '@/components/form/NumberInputWithLabel';
 import SelectWithLabel from '@/components/form/SelectWithLabel';
-import Prediction from '@/components/Prediction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useForm } from '../../../components/match-form';
-import { Database } from '../../backend/database.types';
-import { FeedbackDatabase } from '../../backend/feedbacksupabasetypes';
+import { FeedbackDatabase } from '../../feedbacksupabasetypes';
 import { EVENT_KEY } from '../../misc/EVENT_KEY';
-import { supabaseStatisticFeedback } from '../supabase';
+import { supabaseStatisticFeedback } from '../../supabase';
 
 const GeneralScreen = () => {
 
@@ -63,9 +61,9 @@ const GeneralScreen = () => {
         <ScrollView style={styles.scrollView}>
             <View style={styles.pageContainer}>
 
-                <SelectWithLabel label='Scout name:' selectedValue={state.nameText} itemLabelFormatter={nameLabelFormatter} callback={nameChangeCallback} items={['GUEST', ...[...scoutNames].sort((a, b) => (a['first_name'] ?? '').localeCompare(b['first_name'] ?? '')).map((v, i) => JSON.stringify(v))]} />
+                <Text style={styles.warningText}>This page is for PRACTICE SCOUTING only!!! DO NOT SCOUT QUALIFICATION OR PRE-SCOUTING MATCHES HERE! To scout those, go to the home page.</Text>
 
-                <NumberInputWithLabel label='Match #:' value={state.matchNumber} placeholder='ex. 77' callback={(text: string) => dispatch({ type: 'UPDATE_FIELD', field: 'matchNumber', value: text })} />
+                <SelectWithLabel label='Scout name:' selectedValue={state.nameText} itemLabelFormatter={nameLabelFormatter} callback={nameChangeCallback} items={['GUEST', ...[...scoutNames].sort((a, b) => (a['first_name'] ?? '').localeCompare(b['first_name'] ?? '')).map((v, i) => JSON.stringify(v))]} />
 
                 <NumberInputWithLabel label='Team #:' value={state.teamNumber} placeholder='ex. 9997' callback={(text: string) => {
                     dispatch({ type: 'UPDATE_FIELD', field: 'teamNumber', value: text });
@@ -76,14 +74,6 @@ const GeneralScreen = () => {
                     }
                 }
                 } />
-
-                <SelectWithLabel label='Station:' selectedValue={state.selectedStation} callback={(value: string) =>
-                    dispatch({ type: 'UPDATE_FIELD', field: 'selectedStation', value: value as Database['public']['Enums']['driverstation'] })
-                } items={['B1', 'B2', 'B3', 'R1', 'R2', 'R3']} />
-
-                <Text style={styles.teamNumberWarning}>Please check the team number! An incorrect team leads to BAD DATA and WASTES YOUR TIME!</Text>
-
-                <Prediction />
 
             </View>
         </ScrollView>
@@ -142,6 +132,15 @@ const styles = StyleSheet.create({
         marginTop: 35,
         fontFamily: 'Lexend-Regular',
         textDecorationLine: 'underline',
+    },
+    warningText: {
+        fontSize: 20,
+        width: '90%',
+        textAlign: 'center',
+        color: 'white',
+        marginVertical: 15,
+        backgroundColor: 'red',
+        padding: 10,
     },
 });
 
