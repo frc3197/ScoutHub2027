@@ -120,7 +120,7 @@ const HomeScreen = () => {
           </View>
         </Animated.View>
 
-        <Text style={styles.footer}>Comp: 2026-DCMP, Version: 2.3 {'\n'} FRC 3197 & Mason McManus</Text>
+        <Text style={styles.footer}>Comp: 2026-Roboteer-Rumble, Version: 2.4 {'\n'} FRC 3197 & Mason McManus</Text>
       </View>
     </ScrollView>
   );
