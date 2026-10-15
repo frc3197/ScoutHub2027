@@ -1,8 +1,8 @@
 {
-  "name": "scoutingoffseason2025",
+  "name": "scouthub27",
   "main": "expo-router/entry",
-  "version": "1.0.0",
-  "homepage": "https://nimblevalley.github.io/ScoutHub2025",
+  "version": "27.0.0",
+  "homepage": "https://frc3197.github.io/ScoutHub2027",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
