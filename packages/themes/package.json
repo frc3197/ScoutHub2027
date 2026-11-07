@@ -1,8 +1,8 @@
 {
   "name": "@ScoutHub2027/themes",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Themes and Branding",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -2,7 +2,7 @@
   "name": "@ScoutHub2027/api",
   "version": "1.0.0",
   "description": "Interaction between backend and frontend",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

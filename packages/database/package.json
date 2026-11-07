@@ -2,7 +2,7 @@
   "name": "@ScoutHub2027/database",
   "version": "1.0.0",
   "description": "Holds types stored in the database",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
