@@ -1,14 +1,18 @@
 {
-  "name": "ScoutHub2027",
+  "name": "@ScoutHub2027",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:packages": "pnpm --filter './packages/*' --recursive build",
+    "build:apps": "pnpm build:backend && pnpm build:frontend",
+    "build:backend": "pnpm --filter @scouthub2027/backend build",
+    "build:frontend": "pnpm --filter @scouthub2027/frontend build",
+    "build": "pnpm build:packages && pnpm build:apps"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "hexhounds",
+  "license": "LGPL-3.0-only",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
@@ -17,5 +21,8 @@
     }
   },
   "packageManager": "pnpm@12.18.0",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
 }
